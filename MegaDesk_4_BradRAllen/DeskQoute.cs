@@ -13,7 +13,7 @@ namespace MegaDesk_3_BradRAllen
         public DateTime Quotedate { get; set; }   
         public int RushDays { get; set; }
         public Desk Desk = new Desk();
-        public int QuoteTotal { get; set; }
+        public decimal QuoteTotal { get; set; }
 
         private int SurfaceArea = 0;
 
@@ -109,11 +109,10 @@ namespace MegaDesk_3_BradRAllen
             return 0;
         }
 
-        public int CalculateQuoteTotal(int surfacearea, int drawers, SurfaceMaterial material, int rushDays)
+        public decimal CalculateQuoteTotal(int surfacearea, int drawers, SurfaceMaterial material, int rushDays)
         {
             QuoteTotal = BASE_PRICE + SurfaceAreaFee(surfacearea) + DrawerFee(drawers) + (int)material + RushFee(rushDays,surfacearea);
             return QuoteTotal;
-            //(number of drawers * DrawerPrice) + surfacematerial + RushFee
         }
     }
 }

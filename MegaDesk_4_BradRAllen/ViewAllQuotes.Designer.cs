@@ -33,7 +33,9 @@
             // 
             // closeForm_btn
             // 
-            this.closeForm_btn.Location = new System.Drawing.Point(647, 402);
+            this.closeForm_btn.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.closeForm_btn.ForeColor = System.Drawing.SystemColors.WindowFrame;
+            this.closeForm_btn.Location = new System.Drawing.Point(331, 288);
             this.closeForm_btn.Name = "closeForm_btn";
             this.closeForm_btn.Size = new System.Drawing.Size(141, 36);
             this.closeForm_btn.TabIndex = 5;
@@ -45,9 +47,11 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.BackgroundImage = global::MegaDesk_4_BradRAllen.Properties.Resources.megadesk_plain_bg;
+            this.ClientSize = new System.Drawing.Size(484, 336);
             this.Controls.Add(this.closeForm_btn);
             this.Name = "ViewAllQuotes";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ViewAllQuotes";
             this.ResumeLayout(false);
 

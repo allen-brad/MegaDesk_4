@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,6 @@ namespace MegaDesk_3_BradRAllen
         int DeskDepth = 0;
         int Drawers = 0;
         int RushDays = 0;
-        int DeskQuoteTotal = 0;
         SurfaceMaterial surfaceMaterial;
 
         public AddQuote()
@@ -30,9 +30,20 @@ namespace MegaDesk_3_BradRAllen
             SurfaceMaterial_tb.DataSource = surfaceMaterials;
 
         }
-            
+        private DeskQoute NewQuote;//we'll call the constructor later
         private void closeForm_btn_Click(object sender, EventArgs e)
         {
+            var mainMenu = (MainMenu)Tag;
+            mainMenu.Show();
+            Close();
+        }
+
+        private void FormReset()
+        {
+            //AddQuote NewQuoteForm = new AddQuote();
+            //NewQuoteForm.Tag = this;
+            //NewQuoteForm.Show();
+            //Close();
             var mainMenu = (MainMenu)Tag;
             mainMenu.Show();
             Close();
@@ -92,6 +103,26 @@ namespace MegaDesk_3_BradRAllen
 
         }
 
+        public void SaveQuoteToCSV (DeskQoute Quote)
+        {
+            //open file for writting
+            using (StreamWriter sw = new StreamWriter("qoutes.txt",append:true))
+            {
+                string line = "";
+                //loop through quote object and get properties. Add text qualifier just for fun (because I want an A)
+                foreach (var property in Quote.GetType().GetProperties())
+                {
+                    line += "\"" + property.GetValue(Quote, null)+ "\",";
+                }
+                //must loop through desk object for it's properties
+                foreach (var property in Quote.Desk.GetType().GetProperties())
+                {
+                    line += "\"" + property.GetValue(Quote.Desk, null) + "\",";
+                }
+                sw.WriteLine(line.Remove(line.Length-1));//strip off last , so it is a well formed CSV
+            }
+        }
+
         private void generateQuote_btn_Click(object sender, EventArgs e)
         {
             
@@ -103,7 +134,6 @@ namespace MegaDesk_3_BradRAllen
                 DeskDepth = int.Parse(DeskDepth_tb.Text);
                 Drawers = Decimal.ToInt32(DeskDrawers_tb.Value);
                 surfaceMaterial = (SurfaceMaterial)SurfaceMaterial_tb.SelectedValue;
-
                 if (radioButtonStandard.Checked)
                     {
                         RushDays = 14;
@@ -122,26 +152,29 @@ namespace MegaDesk_3_BradRAllen
                 }
 
                 //now we have our parts so create the qoute object by calling the constructor
-                DeskQoute NewQuote = new DeskQoute(CustomerName, DateTime.Now, DeskWidth, DeskDepth, Drawers, surfaceMaterial, RushDays);
+                NewQuote = new DeskQoute(CustomerName, DateTime.Now, DeskWidth, DeskDepth, Drawers, surfaceMaterial, RushDays);
 
-                //calculate the qoute total
-
-
-
+                //let user know it worked
+                MessageBox.Show("New Qoute Successful.\nQuoute total:" + NewQuote.QuoteTotal.ToString("C2"));
             }
-            catch (Exception)
+            catch (Exception exception)
             {
-
-                throw;
+                Console.WriteLine("Generic Exception Handler: {0}", exception.ToString());
             }
-            
-            //call the contructor of the DeskQuote
-
-            //calculate the total value 
 
             //save DeskQuote as CSV file
+            try
+            {
+                SaveQuoteToCSV(NewQuote);
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
 
-
+            //all done, so refresh form
+            FormReset(); //not working so just go back to main menu
+            
         }
     }
 }

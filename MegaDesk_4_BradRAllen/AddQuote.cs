@@ -28,7 +28,7 @@ namespace MegaDesk_3_BradRAllen
             //build List<T> class to populate the SurfaceMaterial_tb combo box
             List<SurfaceMaterial> surfaceMaterials = Enum.GetValues(typeof(SurfaceMaterial)).Cast<SurfaceMaterial>().ToList();
             SurfaceMaterial_tb.DataSource = surfaceMaterials;
-
+            SurfaceMaterial_tb.SelectedIndex = -1;
         }
         private DeskQoute NewQuote;//we'll call the constructor later
         private void closeForm_btn_Click(object sender, EventArgs e)
@@ -128,12 +128,47 @@ namespace MegaDesk_3_BradRAllen
             
             try
             {
-                //collect values
+                //check for required and collect values
+                string errorMessage = "";
+
+                if (CustomerName_tb.Text == string.Empty)
+                {
+                    //MessageBox.Show("Please enter a Customer Name");
+                    errorMessage += "Customer Name is Required\n";
+                    CustomerName_tb.BackColor = Color.Aqua;
+                }
+
+                if (DeskWidth_tb.Text == string.Empty)
+                {
+                    errorMessage += "Desk Width is Required\n";
+                    DeskWidth_tb.BackColor = Color.Aqua;
+                }
+
+                if (DeskDepth_tb.Text == string.Empty)
+                {
+                    errorMessage += "Desk Depth is Required\n";
+                    DeskDepth_tb.BackColor = Color.Aqua;
+                }
+
+                if (SurfaceMaterial_tb.SelectedIndex < 0 )
+                {
+                    errorMessage += "Surface Material is Required\n";
+                    SurfaceMaterial_tb.BackColor = Color.Aqua;
+                }
+                
+                if (errorMessage.Length > 0)
+                {
+                    MessageBox.Show(errorMessage);
+                    return;
+                }
+
                 CustomerName = CustomerName_tb.Text;
                 DeskWidth = int.Parse(DeskWidth_tb.Text);
                 DeskDepth = int.Parse(DeskDepth_tb.Text);
-                Drawers = Decimal.ToInt32(DeskDrawers_tb.Value);
                 surfaceMaterial = (SurfaceMaterial)SurfaceMaterial_tb.SelectedValue;
+
+                Drawers = Decimal.ToInt32(DeskDrawers_tb.Value);
+
                 if (radioButtonStandard.Checked)
                     {
                         RushDays = 14;

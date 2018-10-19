@@ -15,6 +15,10 @@ namespace MegaDesk_3_BradRAllen
         public SearchQuotes()
         {
             InitializeComponent();
+            //build List<T> class to populate the SurfaceMaterial_tb combo box
+            List<SurfaceMaterial> surfaceMaterials = Enum.GetValues(typeof(SurfaceMaterial)).Cast<SurfaceMaterial>().ToList();
+            SurfaceMaterial_tb.DataSource = surfaceMaterials;
+            SurfaceMaterial_tb.SelectedIndex = -1;
         }
 
         private void closeForm_btn_Click(object sender, EventArgs e)

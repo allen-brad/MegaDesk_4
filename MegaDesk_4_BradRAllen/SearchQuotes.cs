@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace MegaDesk_3_BradRAllen
 {
@@ -19,6 +21,7 @@ namespace MegaDesk_3_BradRAllen
             List<SurfaceMaterial> surfaceMaterials = Enum.GetValues(typeof(SurfaceMaterial)).Cast<SurfaceMaterial>().ToList();
             SurfaceMaterial_tb.DataSource = surfaceMaterials;
             SurfaceMaterial_tb.SelectedIndex = -1;
+            
         }
 
         private void closeForm_btn_Click(object sender, EventArgs e)

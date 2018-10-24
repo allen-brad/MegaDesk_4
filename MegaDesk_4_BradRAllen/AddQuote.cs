@@ -109,15 +109,15 @@ namespace MegaDesk_3_BradRAllen
             using (StreamWriter sw = new StreamWriter("qoutes.txt",append:true))
             {
                 string line = "";
-                //loop through quote object and get properties. Add text qualifier just for fun (because I want an A)
+                //loop through quote object and get properties. I had text qualifier just for fun (because I want an A)
                 foreach (var property in Quote.GetType().GetProperties())
                 {
-                    line += "\"" + property.GetValue(Quote, null)+ "\",";
+                    line += property.GetValue(Quote, null)+ "|";
                 }
                 //must loop through desk object for it's properties
                 foreach (var property in Quote.Desk.GetType().GetProperties())
                 {
-                    line += "\"" + property.GetValue(Quote.Desk, null) + "\",";
+                    line +=  property.GetValue(Quote.Desk, null) + "|";
                 }
                 sw.WriteLine(line.Remove(line.Length-1));//strip off last , so it is a well formed CSV
             }
